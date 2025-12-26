@@ -1,5 +1,6 @@
 import { StreamState } from '../../lib/tindeq-client'
 import type { WeightMeasurement } from '../../lib/tindeq-protocol'
+import { ForceGraph } from '../ForceGraph'
 import './MeasurementPanel.scss'
 
 interface MeasurementPanelProps {
@@ -26,25 +27,38 @@ export function MeasurementPanel({
   const isStreaming = streamState === StreamState.STREAMING
   const isPaused = streamState === StreamState.PAUSED
 
+  // Calculate stats
+  const maxWeight = peakWeight
+  const avgWeight = measurements.length > 0
+    ? measurements.reduce((sum, m) => sum + m.weight, 0) / measurements.length
+    : 0
+
   return (
     <section className="measurement-panel section">
-      <h2>Measurement</h2>
+      {/* Force Graph - Hero Element */}
+      <ForceGraph measurements={measurements} peakWeight={peakWeight} />
 
-      <div className="measurement-display">
-        <div className="weight-card">
-          <label>Current</label>
-          <span className="value">{currentWeight.toFixed(1)} kg</span>
+      {/* Stats Bar - Always visible */}
+      <div className="stats-bar">
+        <div className="stat">
+          <span className="stat-label">Current</span>
+          <span className="stat-value">{currentWeight.toFixed(1)} kg</span>
         </div>
-        <div className="weight-card">
-          <label>Peak</label>
-          <span className="value highlight">{peakWeight.toFixed(1)} kg</span>
+        <div className="stat">
+          <span className="stat-label">Peak</span>
+          <span className="stat-value highlight">{maxWeight.toFixed(1)} kg</span>
+        </div>
+        <div className="stat">
+          <span className="stat-label">Average</span>
+          <span className="stat-value">{avgWeight.toFixed(1)} kg</span>
         </div>
       </div>
 
-      <div className="controls">
+      {/* Controls Bar - Always visible */}
+      <div className="controls-bar">
         {streamState === StreamState.IDLE && (
           <button onClick={onStart} className="btn-primary">
-            Start Measurement
+            Start
           </button>
         )}
 
@@ -70,17 +84,6 @@ export function MeasurementPanel({
           </>
         )}
       </div>
-
-      {/* Graph placeholder */}
-      {measurements.length > 0 && (
-        <div className="graph-container">
-          <h3>Force Curve</h3>
-          <div className="graph-placeholder">
-            <p>Graph visualization coming soon...</p>
-            <p>{measurements.length} data points collected</p>
-          </div>
-        </div>
-      )}
     </section>
   )
 }

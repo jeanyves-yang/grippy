@@ -1,0 +1,43 @@
+@use '../../styles/variables' as *;
+
+.force-graph {
+  flex: 1; // Take available space
+  display: flex;
+  flex-direction: column;
+  min-height: 0; // Allow shrinking
+  overflow: hidden;
+}
+
+.force-graph-container {
+  flex: 1;
+  min-height: 0; // Important: allow flex shrinking
+  max-height: 100%; // Don't exceed parent
+  position: relative;
+}
+
+.force-graph-empty {
+  height: 100%; // Fill container like chart does
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px dashed $color-border;
+  border-radius: $radius-md;
+  opacity: 0.6;
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+.force-graph-peak {
+  margin-top: $spacing-md;
+  text-align: center;
+  font-size: 1.1rem;
+  color: $color-primary;
+
+  strong {
+    font-size: 1.3rem;
+  }
+}
