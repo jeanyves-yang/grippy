@@ -1,0 +1,51 @@
+// Colors
+$color-bg: #242424;
+$color-bg-card: rgba(255, 255, 255, 0.05);
+$color-bg-card-hover: rgba(255, 255, 255, 0.08);
+$color-border: rgba(255, 255, 255, 0.1);
+$color-text: rgba(255, 255, 255, 0.87);
+$color-text-muted: rgba(255, 255, 255, 0.6);
+
+// Status colors
+$color-connected: #22c55e;
+$color-connecting: #eab308;
+$color-disconnected: #666;
+
+// Semantic colors
+$color-primary: #3b82f6;
+$color-primary-hover: #2563eb;
+$color-secondary: #64748b;
+$color-secondary-hover: #475569;
+$color-danger: #ef4444;
+$color-danger-hover: #dc2626;
+$color-warning: #eab308;
+$color-warning-bg: rgba(234, 179, 8, 0.1);
+$color-error: #ef4444;
+$color-error-bg: rgba(239, 68, 68, 0.1);
+
+// Spacing
+$spacing-xs: 0.5rem;
+$spacing-sm: 0.75rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+
+// Border radius
+$radius-sm: 0.5rem;
+$radius-md: 0.75rem;
+$radius-lg: 1rem;
+$radius-xl: 1.5rem;
+
+// Transitions
+$transition-fast: 0.15s ease;
+$transition-normal: 0.2s ease;
+$transition-slow: 0.3s ease;
+
+// Touch targets (mobile)
+$min-touch-target: 44px;
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
