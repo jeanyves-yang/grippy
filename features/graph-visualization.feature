@@ -19,6 +19,7 @@ Feature: Visualize force data with real-time graph
     Then the graph should update immediately
     And I should see a blue line chart
     And the chart should show force on the Y-axis
+    And the Y-axis labels should be formatted to 1 decimal place
     And the chart should fill the available space
 
   Scenario: Graph shows accurate force curve
