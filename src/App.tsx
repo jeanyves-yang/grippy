@@ -158,7 +158,10 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>Built with Web Bluetooth API • For iOS: Use Bluefy Browser</p>
+        <p>
+          Built with Web Bluetooth API • For iOS: Use Bluefy Browser •
+          <a href="https://github.com/jeanyves-yang/grippy" target="_blank" rel="noopener noreferrer"> GitHub</a>
+        </p>
       </footer>
     </div>
   )
