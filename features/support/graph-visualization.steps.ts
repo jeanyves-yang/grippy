@@ -49,6 +49,11 @@ Then('the chart should show force on the Y-axis', function(this: World) {
   // Y-axis labeled with kg values
 })
 
+Then('the Y-axis labels should be formatted to {int} decimal place', function(this: World, decimals: number) {
+  // Y-axis uses toFixed(1) for clean labels (e.g., "30.5 kg" not "30.543 kg")
+  expect(decimals).toBe(1)
+})
+
 Then('the chart should fill the available space', function(this: World) {
   // Graph is responsive
 })
