@@ -12,9 +12,8 @@ import {
   ResponseTag,
   encodeCommand,
   decodeResponse,
-  parseWeightMeasurement,
+  parseWeightMeasurements,
   parseBatteryVoltage,
-  parseFirmwareVersion,
   type WeightMeasurement,
   type BatteryInfo,
   type FirmwareVersion,
@@ -283,25 +282,34 @@ export class TindeqClient {
       if (!value) return;
 
       const response = decodeResponse(value);
+      console.log('Received response:', { tag: response.tag, length: response.length, streamState: this.streamState });
 
       switch (response.tag) {
         case ResponseTag.WEIGHT_MEASUREMENT:
           if (this.streamState === StreamState.STREAMING && this.onWeightData) {
-            const measurement = parseWeightMeasurement(response.data);
-            this.onWeightData(measurement);
+            try {
+              const measurements = parseWeightMeasurements(response.data);
+              console.log(`Parsed ${measurements.length} measurements, latest:`, measurements[measurements.length - 1]);
+              // Call callback for each measurement in the batch
+              measurements.forEach(measurement => this.onWeightData!(measurement));
+            } catch (error) {
+              console.error('Failed to parse weight:', error);
+              console.log('Data length:', response.data.length, 'bytes:', Array.from(response.data.slice(0, 32)));
+            }
           }
           break;
 
-        case ResponseTag.BATTERY_VOLTAGE:
-          if (this.onBatteryUpdate) {
-            const battery = parseBatteryVoltage(response.data);
-            this.onBatteryUpdate(battery);
+        case ResponseTag.CMD_RESPONSE:
+          // Generic command response - could be battery, version, etc.
+          // For now, try to parse as battery if we're expecting it
+          if (response.length === 2 && this.onBatteryUpdate) {
+            try {
+              const battery = parseBatteryVoltage(response.data);
+              this.onBatteryUpdate(battery);
+            } catch (e) {
+              // Not battery data
+            }
           }
-          break;
-
-        case ResponseTag.APP_VERSION:
-          // Handle firmware version response
-          parseFirmwareVersion(response.data);
           break;
 
         case ResponseTag.LOW_BATTERY_WARNING:
