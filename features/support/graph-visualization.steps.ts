@@ -125,6 +125,7 @@ Then('the peak should be shown in blue highlighted text', function(this: World) 
 
 When('I resize the browser window', function(this: World) {
   // Simulates window resize
+  this.graphVisible = true
 })
 
 Then('the graph should resize responsively', function(this: World) {
