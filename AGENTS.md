@@ -6,9 +6,10 @@ PWA for Tindeq Progressor climbing force sensor. Direct Web Bluetooth connection
 ## Architecture
 
 ### Stack
-- **Frontend**: React 19 + TypeScript + Tailwind CSS
+- **Frontend**: React 19 + TypeScript + SCSS
 - **Build**: Vite + PWA plugin
-- **Testing**: Vitest (unit) + Cucumber (BDD with Gherkin)
+- **Testing**: Vitest (unit) + Cucumber (BDD) + Storybook
+- **Charting**: Chart.js (same as Grip Connect reference)
 - **Bluetooth**: Custom Web Bluetooth API implementation
 
 ### Key Design Decisions
@@ -101,9 +102,17 @@ npm run build        # Production build
 - **Parse strategy**: Loop through data in 8-byte chunks, extract weight+timestamp pairs
 - Pause/resume = client-side (device keeps streaming, we just don't process)
 
+## Demo Mode
+Access via URL parameter: `?demo=true`
+- Simulates realistic Progressor device
+- No physical device needed for development
+- Realistic hang patterns (ramp/hold/release)
+- Battery simulation (71%)
+
 ## Next Steps
-- [ ] Component architecture (consider Storybook)
-- [ ] Real-time chart (Chart.js or Recharts)
-- [ ] Session management
+- [ ] Export session data (CSV/JSON)
+- [ ] Session management & history
 - [ ] Data persistence (IndexedDB)
-- [ ] PWA icons (need 192x192 and 512x512 PNGs)
+- [ ] PWA icons (192x192, 512x512 PNGs)
+- [ ] Deploy to Vercel/Netlify (HTTPS for iOS testing)
+- [ ] Remove debug console.logs
