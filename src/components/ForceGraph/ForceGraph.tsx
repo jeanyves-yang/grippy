@@ -93,7 +93,13 @@ export function ForceGraph({ measurements, peakWeight }: ForceGraphProps) {
         },
         ticks: {
           color: 'rgba(255, 255, 255, 0.6)',
-          callback: (value) => `${value} kg`,
+          callback: (value) => {
+            // Format to 1 decimal place
+            if (typeof value === 'number') {
+              return `${value.toFixed(1)} kg`
+            }
+            return `${value} kg`
+          },
         },
       },
     },
