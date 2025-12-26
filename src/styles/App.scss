@@ -1,0 +1,226 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-md;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  @include mobile {
+    padding: $spacing-xs;
+  }
+}
+
+.header {
+  text-align: center;
+  padding: $spacing-xl 0;
+  border-bottom: 1px solid $color-border;
+
+  h1 {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    margin: $spacing-xs 0 0 0;
+    color: $color-text-muted;
+  }
+
+  @include mobile {
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+.main {
+  flex: 1;
+  padding: $spacing-xl 0;
+}
+
+.section {
+  @include card;
+  margin-bottom: $spacing-xl;
+
+  h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin-top: $spacing-lg;
+  }
+}
+
+// Connection section
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin: $spacing-md 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: capitalize;
+
+  .status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    &.connected {
+      @include status-indicator($color-connected);
+    }
+
+    &.connecting {
+      background: $color-connecting;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    &.disconnected {
+      background: $color-disconnected;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// Buttons
+.btn-primary {
+  @include button-variant($color-primary, $color-primary-hover);
+}
+
+.btn-secondary {
+  @include button-variant($color-secondary, $color-secondary-hover);
+}
+
+.btn-danger {
+  @include button-variant($color-danger, $color-danger-hover);
+}
+
+// Warnings & Errors
+.warning {
+  background: $color-warning-bg;
+  border: 1px solid $color-warning;
+  color: lighten($color-warning, 20%);
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  margin: $spacing-md 0;
+}
+
+.error-message {
+  background: $color-error-bg;
+  border: 1px solid $color-error;
+  color: lighten($color-error, 20%);
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  margin: $spacing-md 0;
+}
+
+// Device info
+.device-info {
+  background: rgba(59, 130, 246, 0.05);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.battery-info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: 1.1rem;
+
+  .battery-voltage {
+    opacity: 0.6;
+    font-size: 0.9rem;
+  }
+}
+
+// Measurement display
+.measurement-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-lg;
+  margin: $spacing-lg 0;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.weight-card {
+  text-align: center;
+  padding: $spacing-lg;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-bottom: $spacing-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .value {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+
+    &.highlight {
+      color: $color-primary;
+    }
+  }
+}
+
+// Controls
+.controls {
+  display: flex;
+  gap: $spacing-md;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @include mobile {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Graph
+.graph-container {
+  margin-top: $spacing-xl;
+}
+
+.graph-placeholder {
+  text-align: center;
+  padding: $spacing-2xl;
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px dashed $color-border;
+  border-radius: $radius-md;
+  opacity: 0.6;
+}
+
+// Footer
+.footer {
+  text-align: center;
+  padding: $spacing-xl 0;
+  border-top: 1px solid $color-border;
+  opacity: 0.6;
+  font-size: 0.875rem;
+
+  p {
+    margin: 0.25rem 0;
+  }
+}

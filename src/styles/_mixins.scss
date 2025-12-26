@@ -1,0 +1,61 @@
+@use 'variables' as *;
+
+// Card style
+@mixin card {
+  padding: $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  border: 1px solid $color-border;
+}
+
+// Button base
+@mixin button-base {
+  padding: $spacing-sm $spacing-lg;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: $radius-md;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-normal;
+  min-height: $min-touch-target;
+  min-width: 120px;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Button variant
+@mixin button-variant($bg, $hover) {
+  @include button-base;
+  background: $bg;
+  color: white;
+
+  &:hover:not(:disabled) {
+    background: $hover;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+}
+
+// Status indicator
+@mixin status-indicator($color) {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: $color;
+
+  @if $color == $color-connected {
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+  }
+}
+
+// Mobile responsive
+@mixin mobile {
+  @media (max-width: $breakpoint-sm) {
+    @content;
+  }
+}
