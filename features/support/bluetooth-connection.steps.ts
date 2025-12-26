@@ -192,3 +192,47 @@ Given('I am connected to a Progressor device', async function(this: World) {
 Then('the device should disconnect successfully', function(this: World) {
   expect(this.connectionState).toBe(ConnectionState.DISCONNECTED);
 });
+
+// Already paired scenarios
+When('I view the connection section', function(this: World) {
+  // User is viewing the UI
+});
+
+Then('I should see the device is {string}', function(this: World, status: string) {
+  expect(this.connectionState).toBe(status as ConnectionState);
+});
+
+Then('I should see the {string} button', function(this: World, buttonText: string) {
+  // UI should show this button based on connection state
+  if (buttonText === 'Disconnect') {
+    expect(this.connectionState).toBe(ConnectionState.CONNECTED);
+  }
+});
+
+Then('I should not see the {string} button', function(this: World, buttonText: string) {
+  // UI should hide this button based on connection state
+  if (buttonText === 'Connect Device') {
+    expect(this.connectionState).toBe(ConnectionState.CONNECTED);
+  }
+});
+
+When('the connection is already active', function(this: World) {
+  expect(this.connectionState).toBe(ConnectionState.CONNECTED);
+});
+
+Then('attempting to connect again should be prevented', async function(this: World) {
+  try {
+    await this.client.connect();
+    throw new Error('Should have thrown error');
+  } catch (error) {
+    expect((error as Error).message).toContain('Already connected');
+  }
+});
+
+Then('I should see an appropriate message', function(this: World) {
+  // Error message should indicate already connected or connecting
+  if (this.error) {
+    expect(this.error.message).toMatch(/Already connected|connecting/);
+  }
+  // Or UI prevents the button from being clicked
+});

@@ -34,3 +34,16 @@ Feature: Connect to Tindeq Progressor via Bluetooth
     Then the device should disconnect successfully
     And the connection status should be "disconnected"
     And I should see "Disconnected" message
+
+  Scenario: Show connection status when already paired
+    Given I am connected to a Progressor device
+    When I view the connection section
+    Then I should see the device is "connected"
+    And I should see the "Disconnect" button
+    And I should not see the "Connect Device" button
+
+  Scenario: Prevent duplicate connection attempts
+    Given I am connected to a Progressor device
+    When the connection is already active
+    Then attempting to connect again should be prevented
+    And I should see an appropriate message

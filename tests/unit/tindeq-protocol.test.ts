@@ -49,15 +49,15 @@ describe('tindeq-protocol', () => {
 
   describe('decodeResponse', () => {
     it('should decode TLV response', () => {
-      const buffer = new Uint8Array([ResponseTag.BATTERY_VOLTAGE, 2, 0x10, 0x0E]);
+      const buffer = new Uint8Array([ResponseTag.WEIGHT_MEASUREMENT, 4, 0x10, 0x0E, 0x00, 0x00]);
       const dataView = new DataView(buffer.buffer);
 
       const response = decodeResponse(dataView);
 
-      expect(response.tag).toBe(ResponseTag.BATTERY_VOLTAGE);
-      expect(response.length).toBe(2);
+      expect(response.tag).toBe(ResponseTag.WEIGHT_MEASUREMENT);
+      expect(response.length).toBe(4);
       expect(response.data).toBeInstanceOf(Uint8Array);
-      expect(response.data.length).toBe(2);
+      expect(response.data.length).toBe(4);
     });
 
     it('should throw error for response too short', () => {
