@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import { TindeqClient, ConnectionState, StreamState } from './lib/tindeq-client'
 import type { WeightMeasurement, BatteryInfo } from './lib/tindeq-protocol'
+import { ConnectionPanel } from './components/ConnectionPanel'
+import { DeviceInfo } from './components/DeviceInfo'
+import { MeasurementPanel } from './components/MeasurementPanel'
 import './styles/App.scss'
 
 function App() {
@@ -35,7 +38,6 @@ function App() {
     try {
       setError(null)
       await client.connect()
-      // Get battery info after connecting
       const batteryInfo = await client.getBatteryVoltage()
       setBattery(batteryInfo)
     } catch (err) {
@@ -56,7 +58,7 @@ function App() {
       setError(null)
       setPeakWeight(0)
       setMeasurements([])
-      await client.tare() // Zero the scale
+      await client.tare()
       await client.startStreaming()
       setStreamState(client.getStreamState())
     } catch (err) {
@@ -92,8 +94,6 @@ function App() {
   }
 
   const isConnected = connectionState === ConnectionState.CONNECTED
-  const isStreaming = streamState === StreamState.STREAMING
-  const isPaused = streamState === StreamState.PAUSED
 
   return (
     <div className="app">
@@ -110,106 +110,29 @@ function App() {
       )}
 
       <main className="main">
-        {/* Connection Section */}
-        <section className="section">
-          <h2>Connection</h2>
-          <div className="connection-status">
-            <span className={`status-indicator ${connectionState}`}></span>
-            <span>{connectionState}</span>
-          </div>
+        <ConnectionPanel
+          connectionState={connectionState}
+          isBluetoothSupported={isBluetoothSupported}
+          onConnect={handleConnect}
+          onDisconnect={handleDisconnect}
+          error={error}
+        />
 
-          {!isConnected ? (
-            <button
-              onClick={handleConnect}
-              disabled={!isBluetoothSupported}
-              className="btn-primary"
-            >
-              Connect Device
-            </button>
-          ) : (
-            <button onClick={handleDisconnect} className="btn-secondary">
-              Disconnect
-            </button>
-          )}
-
-          {error && (
-            <div className="error-message">
-              {error}
-            </div>
-          )}
-        </section>
-
-        {/* Device Info Section */}
-        {isConnected && battery && (
-          <section className="section device-info">
-            <h3>Device Info</h3>
-            <div className="battery-info">
-              <span>Battery: {battery.percentage}%</span>
-              <span className="battery-voltage">({battery.voltage}mV)</span>
-            </div>
-            {battery.percentage !== undefined && battery.percentage < 20 && (
-              <div className="warning">⚠️ Low battery</div>
-            )}
-          </section>
-        )}
-
-        {/* Measurement Section */}
         {isConnected && (
-          <section className="section">
-            <h2>Measurement</h2>
+          <>
+            <DeviceInfo battery={battery} />
 
-            <div className="measurement-display">
-              <div className="weight-card">
-                <label>Current</label>
-                <span className="value">{currentWeight.toFixed(1)} kg</span>
-              </div>
-              <div className="weight-card">
-                <label>Peak</label>
-                <span className="value highlight">{peakWeight.toFixed(1)} kg</span>
-              </div>
-            </div>
-
-            <div className="controls">
-              {streamState === StreamState.IDLE && (
-                <button onClick={handleStartMeasurement} className="btn-primary">
-                  Start Measurement
-                </button>
-              )}
-
-              {isStreaming && (
-                <>
-                  <button onClick={handlePause} className="btn-secondary">
-                    Pause
-                  </button>
-                  <button onClick={handleStop} className="btn-danger">
-                    Stop
-                  </button>
-                </>
-              )}
-
-              {isPaused && (
-                <>
-                  <button onClick={handleResume} className="btn-primary">
-                    Resume
-                  </button>
-                  <button onClick={handleStop} className="btn-danger">
-                    Stop
-                  </button>
-                </>
-              )}
-            </div>
-
-            {/* Graph placeholder */}
-            {measurements.length > 0 && (
-              <div className="graph-container">
-                <h3>Force Curve</h3>
-                <div className="graph-placeholder">
-                  <p>Graph visualization coming soon...</p>
-                  <p>{measurements.length} data points collected</p>
-                </div>
-              </div>
-            )}
-          </section>
+            <MeasurementPanel
+              currentWeight={currentWeight}
+              peakWeight={peakWeight}
+              measurements={measurements}
+              streamState={streamState}
+              onStart={handleStartMeasurement}
+              onPause={handlePause}
+              onResume={handleResume}
+              onStop={handleStop}
+            />
+          </>
         )}
       </main>
 
