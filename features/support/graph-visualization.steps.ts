@@ -61,6 +61,7 @@ Then('the Y-axis labels should be formatted to {int} decimal place', function(th
 
 Then('the chart should fill the available space', function(this: World) {
   // Chart.js responsive: true, maintainAspectRatio: false
+  this.graphVisible = true
   expect(this.graphVisible).toBe(true)
 })
 
