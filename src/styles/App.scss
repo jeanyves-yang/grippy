@@ -2,78 +2,148 @@
 @use 'mixins' as *;
 
 .app {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: $spacing-md;
-  min-height: 100vh;
+  padding: $spacing-sm;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-
-  @include mobile {
-    padding: $spacing-xs;
-  }
+  overflow: hidden;
 }
 
 .header {
-  text-align: center;
-  padding: $spacing-xl 0;
+  padding: $spacing-sm;
   border-bottom: 1px solid $color-border;
+  flex-shrink: 0;
 
-  h1 {
-    margin: 0;
-    font-size: 3rem;
-    font-weight: 700;
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $spacing-md;
   }
 
-  .subtitle {
-    margin: $spacing-xs 0 0 0;
-    color: $color-text-muted;
+  .header-title {
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: $color-text-muted;
+      font-size: 0.75rem;
+    }
+  }
+
+  .header-status {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
   }
 
   @include mobile {
-    h1 {
-      font-size: 2rem;
+    .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .header-title h1 {
+      font-size: 1.25rem;
     }
   }
 }
 
+// Inline connection status
+.connection-inline {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  font-size: 0.75rem;
+
+  .status-text {
+    text-transform: capitalize;
+    margin-right: $spacing-xs;
+  }
+}
+
+// Inline battery
+.battery-inline {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+// Small button variant
+.btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  min-height: 28px;
+  min-width: 70px;
+}
+
 .main {
   flex: 1;
-  padding: $spacing-xl 0;
+  padding: $spacing-sm 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0; // Important for flex child scrolling
+}
+
+// Top Bar: Connection + Device Info side-by-side
+.top-bar {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+  flex-shrink: 0;
+
+  .section {
+    margin-bottom: 0;
+    flex: 1;
+    padding: $spacing-xs $spacing-sm;
+
+    h2, h3 {
+      font-size: 0.85rem;
+      margin: 0 0 $spacing-xs 0;
+      font-weight: 600;
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+  }
 }
 
 .section {
   @include card;
-  margin-bottom: $spacing-xl;
+  margin-bottom: $spacing-md;
 
   h2 {
     margin-top: 0;
-    font-size: 1.5rem;
-  }
-
-  h3 {
     font-size: 1.2rem;
-    margin-top: $spacing-lg;
+    margin-bottom: $spacing-sm;
   }
 }
 
-// Connection section
+// Connection section - Ultra compact
 .connection-status {
   display: flex;
   align-items: center;
-  gap: $spacing-sm;
-  margin: $spacing-md 0;
-  font-size: 1.1rem;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-xs;
+  font-size: 0.8rem;
   font-weight: 500;
   text-transform: capitalize;
 
   .status-indicator {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
 
     &.connected {
-      @include status-indicator($color-connected);
+      background: $color-connected;
+      box-shadow: 0 0 4px rgba(34, 197, 94, 0.6);
     }
 
     &.connecting {
@@ -92,135 +162,163 @@
   50% { opacity: 0.5; }
 }
 
-// Buttons
+// Buttons - Smaller
 .btn-primary {
   @include button-variant($color-primary, $color-primary-hover);
+  padding: $spacing-xs $spacing-md;
+  font-size: 0.9rem;
+  min-height: 36px;
 }
 
 .btn-secondary {
   @include button-variant($color-secondary, $color-secondary-hover);
+  padding: $spacing-xs $spacing-md;
+  font-size: 0.9rem;
+  min-height: 36px;
 }
 
 .btn-danger {
   @include button-variant($color-danger, $color-danger-hover);
+  padding: $spacing-xs $spacing-md;
+  font-size: 0.9rem;
+  min-height: 36px;
 }
 
-// Warnings & Errors
+// Warnings & Errors - Compact
 .warning {
   background: $color-warning-bg;
   border: 1px solid $color-warning;
   color: lighten($color-warning, 20%);
-  padding: $spacing-md;
-  border-radius: $radius-md;
-  margin: $spacing-md 0;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  margin: $spacing-xs 0;
+  font-size: 0.85rem;
 }
 
 .error-message {
   background: $color-error-bg;
   border: 1px solid $color-error;
   color: lighten($color-error, 20%);
-  padding: $spacing-md;
-  border-radius: $radius-md;
-  margin: $spacing-md 0;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  margin: $spacing-xs 0;
+  font-size: 0.85rem;
 }
 
-// Device info
+// Device info - Inline
 .device-info {
-  background: rgba(59, 130, 246, 0.05);
-  border-color: rgba(59, 130, 246, 0.2);
+  background: transparent;
+  border: none;
+  padding: $spacing-xs $spacing-sm;
+
+  h3 {
+    margin: 0 0 $spacing-xs 0;
+  }
 }
 
 .battery-info {
   display: flex;
   align-items: center;
   gap: $spacing-xs;
-  font-size: 1.1rem;
+  font-size: 0.8rem;
 
   .battery-voltage {
-    opacity: 0.6;
-    font-size: 0.9rem;
+    opacity: 0.5;
+    font-size: 0.7rem;
   }
 }
 
-// Measurement display
-.measurement-display {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $spacing-lg;
-  margin: $spacing-lg 0;
-
-  @include mobile {
-    grid-template-columns: 1fr;
-  }
-}
-
-.weight-card {
-  text-align: center;
-  padding: $spacing-lg;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: $radius-md;
-  border: 1px solid $color-border;
-
-  label {
-    display: block;
-    font-size: 0.875rem;
-    opacity: 0.7;
-    margin-bottom: $spacing-xs;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .value {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-
-    &.highlight {
-      color: $color-primary;
-    }
-  }
-}
-
-// Controls
-.controls {
+// Measurement panel - Fill remaining space with fixed internal layout
+.measurement-panel {
+  flex: 1;
   display: flex;
-  gap: $spacing-md;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+
+  // Ensure children don't grow beyond container
+  > * {
+    flex-shrink: 0;
+  }
+}
+
+// Controls Bar - Horizontal, compact
+.controls-bar {
+  display: flex;
+  gap: $spacing-xs;
   justify-content: center;
-  flex-wrap: wrap;
+  margin-top: $spacing-sm;
+  padding: $spacing-xs 0;
+  flex-shrink: 0;
+
+  button {
+    flex: 0 0 auto;
+    min-width: 80px;
+  }
 
   @include mobile {
-    flex-direction: column;
+    gap: $spacing-xs;
+    flex-wrap: wrap;
 
     button {
-      width: 100%;
+      flex: 1 1 calc(50% - $spacing-xs);
     }
   }
 }
 
-// Graph
-.graph-container {
-  margin-top: $spacing-xl;
-}
-
-.graph-placeholder {
-  text-align: center;
-  padding: $spacing-2xl;
+// Stats Bar - Compact horizontal
+.stats-bar {
+  display: flex;
+  justify-content: space-around;
+  gap: $spacing-md;
+  margin-top: $spacing-sm;
+  padding: $spacing-xs $spacing-sm;
   background: rgba(255, 255, 255, 0.02);
-  border: 2px dashed $color-border;
-  border-radius: $radius-md;
-  opacity: 0.6;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+
+  .stat {
+    text-align: center;
+
+    .stat-label {
+      display: block;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.5;
+      margin-bottom: 0.125rem;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+
+      &.highlight {
+        color: $color-primary;
+      }
+    }
+  }
+
+  @include mobile {
+    gap: $spacing-sm;
+    .stat .stat-value {
+      font-size: 1rem;
+    }
+  }
 }
 
-// Footer
+// Footer - Minimal
 .footer {
   text-align: center;
-  padding: $spacing-xl 0;
+  padding: $spacing-xs 0;
   border-top: 1px solid $color-border;
-  opacity: 0.6;
-  font-size: 0.875rem;
+  opacity: 0.3;
+  font-size: 0.65rem;
+  flex-shrink: 0;
 
   p {
-    margin: 0.25rem 0;
+    margin: 0;
   }
 }

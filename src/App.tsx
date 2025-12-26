@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import { TindeqClient, ConnectionState, StreamState } from './lib/tindeq-client'
+import { MockTindeqClient } from './lib/mock-tindeq-client'
 import type { WeightMeasurement, BatteryInfo } from './lib/tindeq-protocol'
-import { ConnectionPanel } from './components/ConnectionPanel'
-import { DeviceInfo } from './components/DeviceInfo'
 import { MeasurementPanel } from './components/MeasurementPanel'
 import './styles/App.scss'
 
+// Enable demo mode via URL parameter: ?demo=true
+const isDemoMode = new URLSearchParams(window.location.search).get('demo') === 'true'
+
 function App() {
-  const [client] = useState(() => new TindeqClient())
+  const [client] = useState(() => isDemoMode ? new MockTindeqClient() as any : new TindeqClient())
   const [connectionState, setConnectionState] = useState(ConnectionState.DISCONNECTED)
   const [streamState, setStreamState] = useState(StreamState.IDLE)
   const [currentWeight, setCurrentWeight] = useState<number>(0)
@@ -19,8 +21,8 @@ function App() {
 
   useEffect(() => {
     client.setConnectionStateCallback(setConnectionState)
-    client.setErrorCallback((err) => setError(err.message))
-    client.setWeightDataCallback((measurement) => {
+    client.setErrorCallback((err: Error) => setError(err.message))
+    client.setWeightDataCallback((measurement: WeightMeasurement) => {
       // Clamp negative values to zero (can't have negative force)
       const weight = Math.max(0, measurement.weight)
       setCurrentWeight(weight)
@@ -97,48 +99,66 @@ function App() {
 
   return (
     <div className="app">
+      {/* Header with inline status */}
       <header className="header">
-        <h1>Grippy</h1>
-        <p className="subtitle">Tindeq Progressor Tracker</p>
+        <div className="header-content">
+          <div className="header-title">
+            <h1>Grippy</h1>
+            <p className="subtitle">Tindeq Progressor Tracker</p>
+          </div>
+
+          <div className="header-status">
+            {/* Connection inline */}
+            <div className="connection-inline">
+              <span className={`status-indicator ${connectionState}`}></span>
+              <span className="status-text">{connectionState}</span>
+              {!isConnected ? (
+                <button onClick={handleConnect} disabled={!isBluetoothSupported} className="btn-primary btn-sm">
+                  Connect
+                </button>
+              ) : (
+                <button onClick={handleDisconnect} className="btn-secondary btn-sm">
+                  Disconnect
+                </button>
+              )}
+            </div>
+
+            {/* Battery inline */}
+            {isConnected && battery && (
+              <div className="battery-inline">
+                🔋 {battery.percentage}%
+              </div>
+            )}
+          </div>
+        </div>
+
+        {!isBluetoothSupported && (
+          <div className="warning">
+            <strong>⚠️ Web Bluetooth not supported</strong> - Use Chrome, Edge, or Bluefy on iOS
+          </div>
+        )}
+
+        {error && <div className="error-message">{error}</div>}
       </header>
 
-      {!isBluetoothSupported && (
-        <div className="warning">
-          <p><strong>⚠️ Web Bluetooth not supported</strong></p>
-          <p>Please use Chrome, Edge, or Bluefy browser on iOS</p>
-        </div>
-      )}
-
       <main className="main">
-        <ConnectionPanel
-          connectionState={connectionState}
-          isBluetoothSupported={isBluetoothSupported}
-          onConnect={handleConnect}
-          onDisconnect={handleDisconnect}
-          error={error}
-        />
-
+        {/* Graph fills remaining space */}
         {isConnected && (
-          <>
-            <DeviceInfo battery={battery} />
-
-            <MeasurementPanel
-              currentWeight={currentWeight}
-              peakWeight={peakWeight}
-              measurements={measurements}
-              streamState={streamState}
-              onStart={handleStartMeasurement}
-              onPause={handlePause}
-              onResume={handleResume}
-              onStop={handleStop}
-            />
-          </>
+          <MeasurementPanel
+            currentWeight={currentWeight}
+            peakWeight={peakWeight}
+            measurements={measurements}
+            streamState={streamState}
+            onStart={handleStartMeasurement}
+            onPause={handlePause}
+            onResume={handleResume}
+            onStop={handleStop}
+          />
         )}
       </main>
 
       <footer className="footer">
-        <p>Built with Web Bluetooth API</p>
-        <p>For iOS: Use Bluefy Browser</p>
+        <p>Built with Web Bluetooth API • For iOS: Use Bluefy Browser</p>
       </footer>
     </div>
   )
