@@ -7,70 +7,80 @@ Last updated: 2025-12-26
 ### Core Functionality
 - [x] TypeScript Bluetooth library for Tindeq Progressor
 - [x] Web Bluetooth API integration
-- [x] Real-time weight data streaming (batched format: 15 measurements/packet)
+- [x] Real-time weight data streaming (batched: 15 measurements/packet)
 - [x] Connection management (connect/disconnect)
 - [x] Stream controls (start/pause/resume/stop)
 - [x] Battery monitoring with low battery warnings
-- [x] Negative value clamping (force can't be negative)
+- [x] Negative value clamping (force >= 0)
 - [x] Tare (zero) functionality
+- [x] Stats calculation (Current/Peak/Average)
 
-### Testing
-- [x] BDD with Cucumber + Gherkin (20 scenarios, 133 steps - all passing)
-- [x] Unit tests with Vitest (49 tests - all passing)
-- [x] Cucumber + ESM + TypeScript working with tsx loader
-- [x] Proper test coverage (no redundancy between BDD and unit tests)
-
-### UI/UX
+### UI/UX (Graph-First Design)
 - [x] React 19 + TypeScript
-- [x] Tailwind CSS v3 styling
+- [x] SCSS modular architecture (variables, mixins, component styles)
 - [x] PWA configuration (manifest + service worker)
-- [x] Mobile-optimized (44px touch targets)
+- [x] **Graph-first layout** (no scrolling needed!)
+- [x] Header: Title + inline connection + battery status
+- [x] Chart.js real-time force graph (hero element)
+- [x] Horizontal button bar (compact)
+- [x] Horizontal stats bar (Current/Peak/Average)
+- [x] Consistent layout (no shift when starting measurement)
+- [x] Mobile-optimized touch targets
 - [x] Dark theme
-- [x] Responsive layout
+- [x] Responsive design
+
+### Component Architecture
+- [x] ConnectionPanel component
+- [x] DeviceInfo component
+- [x] MeasurementPanel component
+- [x] ForceGraph component (Chart.js)
+- [x] Clean component separation
+- [x] Storybook integration
+
+### Testing (95 total tests!)
+- [x] BDD with Cucumber + Gherkin (27 scenarios, 181 steps - **all passing**)
+- [x] Unit tests with Vitest (49 tests - **all passing**)
+- [x] Storybook component tests (19 tests - **all passing**)
+- [x] Cucumber + ESM + TypeScript via tsx
+- [x] Graph visualization scenarios
+- [x] Demo mode for testing without device
+
+### Developer Tools
+- [x] Storybook for visual component development
+- [x] Demo mode (?demo=true) with simulated device
+- [x] Component stories (13 variations)
+- [x] Auto-generated component docs
+- [x] Accessibility testing (a11y addon)
 
 ### Documentation
 - [x] README with project description
-- [x] AGENTS.md with architecture decisions
+- [x] AGENTS.md with architecture and protocol details
 - [x] CLAUDE.md with quick reference
+- [x] STATUS.md with roadmap
 - [x] Comprehensive Gherkin specs as living documentation
 
-## 🚧 In Progress
-
-### Protocol Fixes
-- [x] Fixed response tags (was 0xC8, should be 1 for weight)
-- [x] Fixed command tags (use decimal 100-111, not hex)
-- [x] Implemented batched measurement parsing
-- [ ] Remove debug console.logs from tindeq-client.ts
+### Protocol Implementation
+- [x] Correct response tags (0-4, not 0xC8-0xCE)
+- [x] Correct command tags (100-111 decimal)
+- [x] Batched measurement parsing (8 bytes per measurement)
+- [x] Tested with real Progressor device ✅
 
 ## 📋 Next Steps (Prioritized)
 
 ### High Priority
-1. **Real-time Chart Visualization**
-   - Main focus like Grip Connect design
-   - Graph as hero element
-   - Show force curve during streaming
-   - Highlight peak value on graph
-   - Library: Recharts or Chart.js
+1. **Enhanced Graph Features**
+   - Tare button integrated into controls
+   - Download/Export session data (CSV/JSON)
+   - Graph zoom/pan controls
+   - Time axis (show duration)
+   - Mark peak on graph visually
 
-2. **UI Redesign (Graph-First Layout)**
-   - Graph takes center stage (like Grip Connect screenshots)
-   - Buttons overlay on graph: Select Device, Pause/Stop, Tare, Disconnect, Download
-   - Stats bar: Max, Average, Total (less prominent)
-   - Battery & firmware in corner/footer (subtle)
-
-3. **Component Architecture**
-   - Split App.tsx into components:
-     - `ConnectionButton`
-     - `ForceGraph` (main chart)
-     - `ControlBar` (pause/stop/tare/download)
-     - `StatsDisplay` (max/avg/total)
-     - `DeviceInfo` (battery/firmware)
-
-4. **Storybook Setup**
-   - Component development environment
-   - Visual testing
-   - Component documentation
-   - Test different states (disconnected/connected/streaming/paused)
+2. **Polish & Refinements**
+   - Remove debug console.logs
+   - Add loading states/spinners
+   - Better error messages
+   - Firmware version display (optional)
+   - Dark/light theme toggle
 
 ### Medium Priority
 5. **Session Management**
