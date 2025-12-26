@@ -6,9 +6,7 @@ A Progressive Web App for tracking climbing grip strength using the Tindeq Progr
 
 ## Preview
 
-![Grippy Interface](https://via.placeholder.com/1200x600/242424/3b82f6?text=Grippy+-+Real-time+Force+Graph)
-
-*Screenshot placeholder - Add your own screenshot here*
+![Grippy Interface](/screenshots/grippy-demo.png)
 
 ## What is Grippy?
 
