@@ -2,6 +2,14 @@
 
 A Progressive Web App for tracking climbing grip strength using the Tindeq Progressor force sensor.
 
+🚀 **Live Demo:** [grippy-vert.vercel.app](https://grippy-vert.vercel.app) | [Demo Mode](https://grippy-vert.vercel.app?demo=true)
+
+## Preview
+
+![Grippy Interface](https://via.placeholder.com/1200x600/242424/3b82f6?text=Grippy+-+Real-time+Force+Graph)
+
+*Screenshot placeholder - Add your own screenshot here*
+
 ## What is Grippy?
 
 Grippy lets you connect your Tindeq Progressor (a Bluetooth-enabled climbing dynamometer) directly to your phone or computer to:
@@ -70,14 +78,23 @@ npm run build
 npm run preview
 ```
 
-## iOS Usage
+## Quick Start
 
+### Desktop (Chrome/Edge)
+1. Visit [grippy-vert.vercel.app](https://grippy-vert.vercel.app)
+2. Click "Connect" and select your Progressor
+3. Click "Start" to begin measuring
+
+### iOS (iPhone/iPad)
 Since Safari doesn't support Web Bluetooth:
 
 1. Install [Bluefy Browser](https://apps.apple.com/us/app/bluefy-web-ble-browser/id1492822055) from App Store (free)
-2. Open the app URL in Bluefy
+2. Open [grippy-vert.vercel.app](https://grippy-vert.vercel.app) in Bluefy
 3. Grant Bluetooth permissions
 4. Connect to your Progressor device
+
+### Demo Mode (No Device Required)
+Try the app without a Progressor: [grippy-vert.vercel.app?demo=true](https://grippy-vert.vercel.app?demo=true)
 
 ## Project Structure
 
