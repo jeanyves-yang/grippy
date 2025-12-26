@@ -115,14 +115,17 @@ export class TindeqClient {
     try {
       this.setConnectionState(ConnectionState.CONNECTING);
 
-      // Request device
+      console.log('Requesting Bluetooth device...');
+
+      // Request device - try simpler filter first for Bluefy compatibility
       this.device = await navigator.bluetooth.requestDevice({
         filters: [
-          { namePrefix: DEVICE_NAME_PREFIX },
-          { services: [PROGRESSOR_SERVICE_UUID] },
+          { namePrefix: DEVICE_NAME_PREFIX }
         ],
         optionalServices: [PROGRESSOR_SERVICE_UUID],
       });
+
+      console.log('Device selected:', this.device.name);
 
       // Listen for disconnection
       this.device.addEventListener('gattserverdisconnected', this.handleDisconnection);
